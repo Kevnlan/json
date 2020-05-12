@@ -1,0 +1,195 @@
+import 'dart:convert';
+import 'package:flushbar/flushbar.dart';
+
+/*
+import 'package:coronavirus/models/ListCountries.dart';
+*/
+import 'package:coronavirus/models/casessmodel.dart';
+import 'package:coronavirus/models/convertecountry.dart';
+import 'package:coronavirus/models/countrymodels.dart';
+import 'package:coronavirus/screen/thecases.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../size_config.dart';
+
+class List_sammry extends StatefulWidget {
+  @override
+  _List_sammryState createState() => _List_sammryState();
+}
+
+class _List_sammryState extends State<List_sammry> {
+  Future<List<ListCountries>> _myString;
+  List<ListCountries> countries = [];
+
+  bool isempty;
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initial();
+  }
+
+  void initial() async {
+    _myString = _getUsers();
+  }
+
+  handlepics(String name) {
+    String code = Converte(name);
+    return Image.network("https://www.countryflags.io/$code/shiny/64.png",) ;
+  }
+
+  List<casessmodel> location = [];
+  TextEditingController editingController = TextEditingController();
+  var items = List<ListCountries>();
+  List<ListCountries> _searchResult = [];
+  List<ListCountries> _userDetails = [];
+
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    _userDetails.forEach((userDetail) {
+      if (userDetail.country.contains(text) )
+        _searchResult.add(userDetail);
+    });
+
+    setState(() {});
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return /* Center(child: Text("Hii") );*/
+        Scaffold(
+          appBar: AppBar(
+            title: Text("List of Countries"),
+          ),
+      body: Column(
+        children: [
+          Container(
+            color: Colors.orange,
+
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged:(value){
+                  onSearchTextChanged(value);
+                } ,
+                controller: editingController,
+                decoration: InputDecoration(
+                    labelText: "Search",
+                    hintText: "Search",
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: <Color>[ Colors.orangeAccent, Colors.red])),
+              child: FutureBuilder(
+                  future: _myString,
+                  builder: (BuildContext context, AsyncSnapshot asyncSnapshot) {
+                    if (asyncSnapshot.data == null) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return isempty
+                          ? Center(
+                          child: Container(
+                              color: Colors.white30,
+                              child: Text(
+                                "Table is empty .. ",
+                                style: TextStyle(
+                                    fontSize: SizeConfig.heightMultiplier * 4.39),
+                              )))
+                          : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: asyncSnapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card(
+                              color: Colors.white30,
+                              child: ListTile(
+                                title: Text("${asyncSnapshot.data[index].country} ",
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.heightMultiplier * 3)),
+                                leading: handlepics(asyncSnapshot.data[index].country.toString()),
+                                subtitle: Text(
+                                    "he is with driver ${asyncSnapshot.data[index].todayDeaths}",
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.textMultiplier * 2.0)),
+                                onTap: () {
+                                  showSimpleFlushbar(context);
+
+
+                                  Future.delayed(const Duration(seconds: 2), () {
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TheCasess(asyncSnapshot.data[index].country,
+                                        asyncSnapshot.data[index].cases.toString(),
+                                        asyncSnapshot.data[index].todayCases.toString(),
+                                        asyncSnapshot.data[index].deaths.toString(),
+                                        asyncSnapshot.data[index].todayDeaths.toString(),
+                                        asyncSnapshot.data[index].recovered.toString())));
+
+                                  });
+
+
+                                  print("ok");
+                                },
+                              ),
+                            );
+                          });
+                    }
+                  }),
+            ),
+          ),
+        ],
+      )
+    );
+  }
+
+  Future<List<ListCountries>> _getUsers() async {
+    var data =
+        await http.get("https://coronavirus-19-api.herokuapp.com/countries");
+    var jsonData = json.decode(data.body);
+    if (data.statusCode != 200) {
+      print("1");
+      isempty = true;
+    } else {
+      print("2");
+      isempty = false;
+      print("isempty = $isempty");
+      jsonData.forEach((element) {
+        countries.add(ListCountries.fromJson(element));
+      });
+
+      print("3");
+
+      print("4");
+      return countries;
+    }
+  }
+  void showSimpleFlushbar(BuildContext context) {
+
+    Flushbar(
+      // There is also a messageText property for when you want to
+      // use a Text widget and not just a simple String
+      messageText: Text(
+        'Loading ...',
+        style: TextStyle(fontSize: SizeConfig.textMultiplier * 2.92 , color: Colors.white),
+      ),
+      flushbarStyle: FlushbarStyle.GROUNDED,
+      // Even the button can be styled to your heart's content
+      showProgressIndicator: true,
+      duration: Duration(seconds: 2),
+      // Show it with a cascading operator
+    )..show(context);
+
+
+  }
+}
+
