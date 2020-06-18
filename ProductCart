@@ -1,0 +1,4 @@
+class ProductCart extends Product {
+  ProductCart({this.number});
+  int number;
+}
