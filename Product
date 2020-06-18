@@ -1,0 +1,175 @@
+ class Product {
+  Product({
+    this.id,
+    this.name,
+    this.addedBy,
+    this.userId,
+    this.categoryId,
+    this.subcategoryId,
+    this.subsubcategoryId,
+    this.brandId,
+    this.photos,
+    this.thumbnailImg,
+    this.featuredImg,
+    this.flashDealImg,
+    this.videoProvider,
+    this.videoLink,
+    this.tags,
+    this.description,
+    this.unitPrice,
+    this.purchasePrice,
+    this.choiceOptions,
+    this.colors,
+    this.variations,
+    this.todaysDeal,
+    this.published,
+    this.featured,
+    this.currentStock,
+    this.unit,
+    this.discount,
+    this.discountType,
+    this.tax,
+    this.taxType,
+    this.shippingType,
+    this.shippingCost,
+    this.numOfSale,
+    this.metaTitle,
+    this.metaDescription,
+    this.metaImg,
+    this.pdf,
+    this.slug,
+    this.rating,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  int id;
+  String name;
+  String addedBy;
+  int userId;
+  int categoryId;
+  int subcategoryId;
+  int subsubcategoryId;
+  int brandId;
+  String photos;
+  String thumbnailImg;
+  String featuredImg;
+  String flashDealImg;
+  String videoProvider;
+  dynamic videoLink;
+  String tags;
+  String description;
+  int unitPrice;
+  double purchasePrice;
+  String choiceOptions;
+  String colors;
+  String variations;
+  int todaysDeal;
+  int published;
+  int featured;
+  int currentStock;
+  String unit;
+  int discount;
+  String discountType;
+  int tax;
+  String taxType;
+  String shippingType;
+  int shippingCost;
+  int numOfSale;
+  String metaTitle;
+  String metaDescription;
+  dynamic metaImg;
+  dynamic pdf;
+  String slug;
+  int rating;
+  DateTime createdAt;
+  DateTime updatedAt;
+
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+    id: json["id"],
+    name: json["name"],
+    addedBy: json["added_by"],
+    userId: json["user_id"],
+    categoryId: json["category_id"],
+    subcategoryId: json["subcategory_id"],
+    subsubcategoryId: json["subsubcategory_id"],
+    brandId: json["brand_id"],
+    photos: json["photos"],
+    thumbnailImg: json["thumbnail_img"],
+    featuredImg: json["featured_img"],
+    flashDealImg: json["flash_deal_img"],
+    videoProvider: json["video_provider"],
+    videoLink: json["video_link"],
+    tags: json["tags"],
+    description: json["description"],
+    unitPrice: json["unit_price"],
+    purchasePrice: json["purchase_price"].toDouble(),
+    choiceOptions: json["choice_options"],
+    colors: json["colors"],
+    variations: json["variations"],
+    todaysDeal: json["todays_deal"],
+    published: json["published"],
+    featured: json["featured"],
+    currentStock: json["current_stock"],
+    unit: json["unit"],
+    discount: json["discount"],
+    discountType: json["discount_type"],
+    tax: json["tax"],
+    taxType: json["tax_type"],
+    shippingType: json["shipping_type"],
+    shippingCost: json["shipping_cost"],
+    numOfSale: json["num_of_sale"],
+    metaTitle: json["meta_title"],
+    metaDescription: json["meta_description"],
+    metaImg: json["meta_img"],
+    pdf: json["pdf"],
+    slug: json["slug"],
+    rating: json["rating"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "added_by": addedBy,
+    "user_id": userId,
+    "category_id": categoryId,
+    "subcategory_id": subcategoryId,
+    "subsubcategory_id": subsubcategoryId,
+    "brand_id": brandId,
+    "photos": photos,
+    "thumbnail_img": thumbnailImg,
+    "featured_img": featuredImg,
+    "flash_deal_img": flashDealImg,
+    "video_provider": videoProvider,
+    "video_link": videoLink,
+    "tags": tags,
+    "description": description,
+    "unit_price": unitPrice,
+    "purchase_price": purchasePrice,
+    "choice_options": choiceOptions,
+    "colors": colors,
+    "variations": variations,
+    "todays_deal": todaysDeal,
+    "published": published,
+    "featured": featured,
+    "current_stock": currentStock,
+    "unit": unit,
+    "discount": discount,
+    "discount_type": discountType,
+    "tax": tax,
+    "tax_type": taxType,
+    "shipping_type": shippingType,
+    "shipping_cost": shippingCost,
+    "num_of_sale": numOfSale,
+    "meta_title": metaTitle,
+    "meta_description": metaDescription,
+    "meta_img": metaImg,
+    "pdf": pdf,
+    "slug": slug,
+    "rating": rating,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+  };
+}
